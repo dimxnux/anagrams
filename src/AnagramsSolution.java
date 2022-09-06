@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Stream;
+import java.util.Map.Entry;
 
 public class AnagramsSolution {
 
@@ -13,8 +13,11 @@ public class AnagramsSolution {
 
         try (BufferedReader reader =
                      new BufferedReader(new FileReader(WORDS_FILE))) {
-            reader.lines()
-                    .forEach(word -> addWordToAnagrams(wordsByAnagram, word));
+
+            String word;
+            while ((word = reader.readLine()) != null) {
+                addWordToAnagrams(wordsByAnagram, word);
+            }
         }
 
         return wordsByAnagram;
@@ -49,18 +52,41 @@ public class AnagramsSolution {
         return String.valueOf(chars);
     }
 
+    public static <T extends Comparable<T>> void sortList(List<T> list) {
+        // insertion sort
+        int n = list.size();
+        for (int i = 0; i < n - 1; ++i) {
+            int j = i;
+            T key = list.get(i + 1);
+
+            while (j >= 0
+                    && (list.get(j).compareTo(key) > 0)) {
+                list.set(j + 1, list.get(j));
+                --j;
+            }
+
+            list.set(j + 1, key);
+        }
+    }
+
     public static void solve() throws IOException {
         Map<String, List<String>> wordsByAnagram = readWords();
+        Map<String, List<String>> filteredAnagrams = new TreeMap<>();
 
-        wordsByAnagram.entrySet().stream()
-                .filter(entry -> entry.getValue().size() > 1)
-                .sorted(Map.Entry.comparingByKey())
-                .flatMap(entry -> Stream.of(entry.getValue()))
-                .forEach(list -> {
-                    list.sort(Comparator.naturalOrder());
-                    list.forEach(word -> System.out.print(word + " "));
-                    System.out.println();
-                });
+        for (Entry<String, List<String>> entry : wordsByAnagram.entrySet()) {
+            if (entry.getValue().size() > 1) {
+                filteredAnagrams.put(entry.getKey(), entry.getValue());
+            }
+        }
+
+        for (List<String> list : filteredAnagrams.values()) {
+            sortList(list);
+
+            for (String anagram : list) {
+                System.out.print(anagram + " ");
+            }
+            System.out.println();
+        }
     }
 
     public static void main(String[] args) throws IOException {
