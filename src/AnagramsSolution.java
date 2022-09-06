@@ -70,12 +70,14 @@ public class AnagramsSolution {
     }
 
     public static void solve() throws IOException {
-        Map<String, List<String>> wordsByAnagram = readWords();
-        Map<String, List<String>> filteredAnagrams = new TreeMap<>();
+        Map<String, List<String>> filteredAnagrams = new TreeMap<>(readWords());
+        Iterator<Entry<String, List<String>>> it =
+                filteredAnagrams.entrySet().iterator();
 
-        for (Entry<String, List<String>> entry : wordsByAnagram.entrySet()) {
-            if (entry.getValue().size() > 1) {
-                filteredAnagrams.put(entry.getKey(), entry.getValue());
+        while (it.hasNext()) {
+            Entry<String, List<String>> entry = it.next();
+            if (entry.getValue().size() <= 1) {
+                it.remove();
             }
         }
 
