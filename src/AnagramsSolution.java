@@ -6,9 +6,9 @@ import java.util.stream.Stream;
 
 public class AnagramsSolution {
 
-    public static final String WORDS_FILE = "sample.txt";
+    private static final String WORDS_FILE = "sample.txt";
 
-    public static Map<String, List<String>> readWords() throws IOException {
+    private static Map<String, List<String>> readWords() throws IOException {
         Map<String, List<String>> wordsByAnagram = new HashMap<>();
 
         try (BufferedReader reader =
@@ -20,7 +20,7 @@ public class AnagramsSolution {
         return wordsByAnagram;
     }
 
-    public static void addWordToAnagrams(Map<String, List<String>> wordsByAnagram, String word) {
+    private static void addWordToAnagrams(Map<String, List<String>> wordsByAnagram, String word) {
         if (word == null || word.isEmpty() || word.isBlank()) {
             return;
         }
