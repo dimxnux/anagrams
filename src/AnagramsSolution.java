@@ -50,6 +50,11 @@ public class AnagramsSolution {
             }
         }
 
+        List<List<String>> sortedAnagramsByLength =
+                new ArrayList<>(filteredAnagrams.values());
+
+        MergeSort.sort(sortedAnagramsByLength);
+
         for (List<String> list : filteredAnagrams.values()) {
             InsertionSort.sort(list, new Comparator<String>() {
                 @Override
