@@ -1,3 +1,5 @@
+import utils.Words;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -29,28 +31,12 @@ public class AnagramsSolution {
         }
 
         word = word.trim().toLowerCase();
-        String sortedWord = sortWord(word);
+        String sortedWord = Words.sort(word);
 
         wordsByAnagram.putIfAbsent(sortedWord, new ArrayList<>());
         wordsByAnagram.get(sortedWord).add(word);
     }
 
-    private static String sortWord(String word) {
-        char[] chars = word.toCharArray();
-        int n = chars.length;
-
-        for (int i = 0; i < n - 1; ++i) {
-            for (int j = 0; j < n - 1 - i; ++j) {
-                if (chars[j] > chars[j + 1]) {
-                    char temp = chars[j];
-                    chars[j] = chars[j + 1];
-                    chars[j + 1] = temp;
-                }
-            }
-        }
-
-        return String.valueOf(chars);
-    }
 
     private static <T extends Comparable<T>> void sortList(List<T> list) {
         // insertion sort
