@@ -52,7 +52,7 @@ public class AnagramsSolution {
         return String.valueOf(chars);
     }
 
-    public static <T extends Comparable<T>> void sortList(List<T> list) {
+    private static <T extends Comparable<T>> void sortList(List<T> list) {
         // insertion sort
         int n = list.size();
         for (int i = 0; i < n - 1; ++i) {
