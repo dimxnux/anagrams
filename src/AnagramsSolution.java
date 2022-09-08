@@ -55,13 +55,26 @@ public class AnagramsSolution {
 
         // compares two List<String> by the length of the first word from the both lists
         Comparator<List<String>> wordLengthComparator =
-                Comparator.comparing(list -> list.get(0).length());
+                new Comparator<List<String>>() {
+                    @Override
+                    public int compare(List<String> list1, List<String> list2) {
+                        int word1Length = list1.get(0).length();
+                        int word2Length = list2.get(0).length();
+
+                        return word1Length - word2Length;
+                    }
+                };
 
         MergeSort.sort(sortedAnagrams, wordLengthComparator);
 
         for (List<String> list : filteredAnagrams.values()) {
             // sort the list in natural order
-            MergeSort.sort(list, Comparator.naturalOrder());
+            MergeSort.sort(list, new Comparator<>() {
+                @Override
+                public int compare(String s1, String s2) {
+                    return s1.compareTo(s2);
+                }
+            });
 
             for (String anagram : list) {
                 System.out.print(anagram + " ");
