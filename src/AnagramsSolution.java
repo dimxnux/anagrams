@@ -1,4 +1,4 @@
-import utils.Words;
+import utils.AnagramHashCalculator;
 import utils.sort.MergeSort;
 
 import java.io.BufferedReader;
@@ -11,8 +11,8 @@ public class AnagramsSolution {
 
     private static final String WORDS_FILE = "sample.txt";
 
-    private static Map<String, List<String>> readWords() throws IOException {
-        Map<String, List<String>> wordsByAnagram = new HashMap<>();
+    private static Map<Long, List<String>> readWords() throws IOException {
+        Map<Long, List<String>> wordsByAnagram = new HashMap<>();
 
         try (BufferedReader reader =
                      new BufferedReader(new FileReader(WORDS_FILE))) {
@@ -26,25 +26,25 @@ public class AnagramsSolution {
         return wordsByAnagram;
     }
 
-    private static void addWordToAnagrams(Map<String, List<String>> wordsByAnagram, String word) {
+    private static void addWordToAnagrams(Map<Long, List<String>> wordsByAnagram, String word) {
         if (word == null || word.isEmpty() || word.isBlank()) {
             return;
         }
 
         word = word.trim().toLowerCase();
-        String sortedWord = Words.sort(word);
+        long wordHash = AnagramHashCalculator.calculateHashUsingPrimes(word);
 
-        wordsByAnagram.putIfAbsent(sortedWord, new ArrayList<>());
-        wordsByAnagram.get(sortedWord).add(word);
+        wordsByAnagram.putIfAbsent(wordHash, new ArrayList<>());
+        wordsByAnagram.get(wordHash).add(word);
     }
 
     public static void solve() throws IOException {
-        Map<String, List<String>> filteredAnagrams = new TreeMap<>(readWords());
-        Iterator<Entry<String, List<String>>> it =
+        Map<Long, List<String>> filteredAnagrams = new HashMap<>(readWords());
+        Iterator<Entry<Long, List<String>>> it =
                 filteredAnagrams.entrySet().iterator();
 
         while (it.hasNext()) {
-            Entry<String, List<String>> entry = it.next();
+            Entry<Long, List<String>> entry = it.next();
             if (entry.getValue().size() <= 1) {
                 it.remove();
             }
@@ -67,7 +67,7 @@ public class AnagramsSolution {
 
         MergeSort.sort(sortedAnagrams, wordLengthComparator);
 
-        for (List<String> list : filteredAnagrams.values()) {
+        for (List<String> list : sortedAnagrams) {
             // sort the list in natural order
             MergeSort.sort(list, new Comparator<>() {
                 @Override
@@ -84,7 +84,10 @@ public class AnagramsSolution {
     }
 
     public static void main(String[] args) throws IOException {
+        long startTime = System.currentTimeMillis();
         solve();
+        long endTime = System.currentTimeMillis();
+        System.out.println("The algorithm took: " + (endTime - startTime + 1) + " milliseconds");
     }
 
 }
