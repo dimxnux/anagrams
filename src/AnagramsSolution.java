@@ -1,5 +1,4 @@
 import utils.Words;
-import utils.sort.InsertionSort;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -60,12 +59,8 @@ public class AnagramsSolution {
         MergeSort.sort(sortedAnagrams, wordLengthComparator);
 
         for (List<String> list : filteredAnagrams.values()) {
-            InsertionSort.sort(list, new Comparator<String>() {
-                @Override
-                public int compare(String s1, String s2) {
-                    return s1.compareTo(s2);
-                }
-            });
+            // sort the list in natural order
+            MergeSort.sort(list, Comparator.naturalOrder());
 
             for (String anagram : list) {
                 System.out.print(anagram + " ");
