@@ -50,10 +50,14 @@ public class AnagramsSolution {
             }
         }
 
-        List<List<String>> sortedAnagramsByLength =
+        List<List<String>> sortedAnagrams =
                 new ArrayList<>(filteredAnagrams.values());
 
-        MergeSort.sort(sortedAnagramsByLength);
+        // compares two List<String> by the length of the first word from the both lists
+        Comparator<List<String>> wordLengthComparator =
+                Comparator.comparing(list -> list.get(0).length());
+
+        MergeSort.sort(sortedAnagrams, wordLengthComparator);
 
         for (List<String> list : filteredAnagrams.values()) {
             InsertionSort.sort(list, new Comparator<String>() {
