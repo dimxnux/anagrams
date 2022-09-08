@@ -1,4 +1,5 @@
 import utils.Words;
+import utils.sort.MergeSort;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
